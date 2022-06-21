@@ -9,3 +9,26 @@
   svg {
     border: 1px solid black;
   }
+
+  .deal-button {
+    padding: 0.5rem 2rem;
+    border: 3px solid #212121;
+    margin: 1rem;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #212121;
+    background-color: #eaeaea;
+    transition-property: all;
+    transition-duration: 0.3s;
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+  }
+
+  .deal-button:hover {
+    font-weight: bold;
+    background-color: #fff;
+    cursor: pointer;
+  }

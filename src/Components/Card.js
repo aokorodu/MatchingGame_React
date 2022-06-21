@@ -13,16 +13,42 @@ class Card extends React.Component {
     this.i = index | 0;
     this.s = symbol;
     this.onClick = onClick;
+
+    this.locked = false;
   }
 
   clickHandler = () => {
     console.log("symbol", this.s, ' clicked');
+
+    if(this.locked){
+      console.log('this card is locked')
+      return
+    }
     this.onClick(this.i);
   };
 
   show = () => {
     console.log("show");
+    const face = document.querySelector(`#face_${this.i}`);
+    face.setAttribute("opacity", 0)
   };
+
+  hide = () => {
+    console.log("hide");
+    const face = document.querySelector(`#face_${this.i}`);
+    face.setAttribute("opacity", 1)
+  };
+
+  move = (x, y, delay) => {
+    console.log("move to: ", x, y, "delay:", delay);
+    const holder = document.querySelector(`#holder_${this.i}`);
+    const str = `translate(${x}, ${y})`
+    holder.setAttribute("transform", str)
+  };
+
+  lock = ()=>{
+    this.locked = true;
+  }
 
   getSymbol = () => {
     console.log("show");
@@ -33,7 +59,7 @@ class Card extends React.Component {
   render() {
     return (
       <>
-        <g
+        <g id={`holder_${this.i}`}
           transform={`translate(${
             parseInt(this.position.x) + this.w / 2
           }, ${parseInt(this.position.y + this.h / 2)})`}
@@ -60,6 +86,7 @@ class Card extends React.Component {
             {this.s}
           </text>
           <rect
+          id={`face_${this.i}`}
             onClick={this.clickHandler}
             x={-this.w / 2}
             y={-this.h / 2}
@@ -69,7 +96,7 @@ class Card extends React.Component {
             ry="10"
             stroke="black"
             fill="#288DDD"
-            opacity=".2"
+            opacity="1"
           ></rect>
         </g>
       </>

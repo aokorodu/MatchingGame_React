@@ -58,6 +58,34 @@ function MatchingGame({
     }
   };
 
+  const handleStartClick = ()=>{
+    gameStarted = true;
+    console.log(gameStarted);
+    deal();
+  }
+
+  const deal = ()=> {
+    console.log("dealing");
+    console.log('rows:', r, " columns:", c)
+    const startX = (w - rowWidth) / 2;
+    const startY = (h - columnHeight) / 2;
+
+    console.log('startX:', startX, " startY:", startY)
+    for (let row = 0; row < r; row++) {
+      for (let col = 0; col < c; col++) {
+        const ind = totalCards - (r * row + col);
+        const xpos = startX + row * (cWidth + gap);
+        const ypos = startY + col * (cHeight + gap);
+        console.log('xpos:', xpos, " ypos:", ypos)
+        cardRefs.current[r * row + col].move(
+          xpos,
+          ypos,
+          ind / 20
+        );
+      }
+    }
+  }
+
   const handleCardClick = (index) => {
     if (gameOver) return;
     if (selectedCards.length >= 2) return;
@@ -73,27 +101,24 @@ function MatchingGame({
   };
 
   const selectCard = (cardIndex) => {
-    // console.log("cardComponentArray length: ", cardComponentArray.length);
     const newCard = cardRefs.current[cardIndex];
-     console.log("newcard:", newCard);
     newCard.show();
     selectedCards.push(newCard);
-    // console.log("selectedCards", selectedCards.toString());
   };
 
   const checkIfMatching = ()=>{
     if (selectedCards.length == 2) {
       if (isMatching()) {
         console.log('matching')
-        //collectWinnings();
+        collectWinnings();
       } else {
-        //putEmBack();
+        putEmBack();
         console.log('not matching')
       }
     }
   }
 
-  function isMatching() {
+  const isMatching = ()=> {
     let matching = false;
     const symbol_0 = selectedCards[0].getSymbol();
     const symbol_1 = selectedCards[1].getSymbol();
@@ -104,6 +129,26 @@ function MatchingGame({
     }
 
     return matching;
+  }
+
+  function collectWinnings() {
+    matches++;
+    selectedCards.forEach((card) => {
+      card.lock();
+    });
+
+    selectedCards = [];
+  }
+
+  function putEmBack() {
+    misses++;
+    setTimeout(() => {
+      selectedCards.forEach((card) => {
+        card.hide();
+      });
+
+      selectedCards = [];
+    }, 1200);
   }
 
   return (
@@ -125,6 +170,7 @@ function MatchingGame({
           );
         })}
       </svg>
+      <div onClick={handleStartClick} className="deal-button">START</div>
       <div>
         rows: {r} columns: {c} cardWidth: {cWidth} cardHeight: {cHeight}
       </div>
@@ -132,7 +178,7 @@ function MatchingGame({
         rowWidth:{rowWidth} columnHeight:{columnHeight}
       </div>
       <div>totalCards:{totalCards}</div>
-      <div>{symbols.toString()}</div>
+      <div>gameStarted: {gameStarted}</div>
     </div>
   );
 }
