@@ -96,7 +96,7 @@ class Card extends React.Component {
             ry="10"
             stroke="black"
             fill="#288DDD"
-            opacity="1"
+            opacity=".2"
           ></rect>
         </g>
       </>

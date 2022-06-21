@@ -61,7 +61,9 @@ function MatchingGame({
   const handleStartClick = ()=>{
     gameStarted = true;
     console.log(gameStarted);
+    
     deal();
+    shuffle();
   }
 
   const deal = ()=> {
@@ -83,6 +85,28 @@ function MatchingGame({
           ind / 20
         );
       }
+    }
+  }
+
+  const shuffle = ()=> {
+    console.log("shuffling");
+    let indexArray = [];
+    for (let i = 0; i < totalCards; i++) {
+      indexArray.push(i);
+    }
+    indexArray = indexArray.sort((a, b) => 0.5 - Math.random());
+
+    const startX = (w - rowWidth) / 2;
+    const startY = (h - columnHeight) / 2;
+    for (let i = 0; i < totalCards; i++) {
+      let col = i % c;
+      let row = Math.floor(i / c);
+      const index = indexArray[i];
+      cardRefs.current[index].move(
+        startX + row * (cWidth + gap),
+        startY + col * (cHeight + gap),
+        Math.random() * 0.1
+      );
     }
   }
 
@@ -159,8 +183,8 @@ function MatchingGame({
             <Card
               ref={addToRefs}
               key={index}
-              x={25 + index * 10}
-              y={h / 2 - index * 10}
+              x={25 + index * 1}
+              y={h / 2 - index * 1}
               w={cardWidth}
               h={cardHeight}
               index={index}
