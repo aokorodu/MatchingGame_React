@@ -1,52 +1,63 @@
 import React, { useState, useEffect } from "react";
 
-const Timer = ({ xpos, ypos, duration=60 }) => {
-  let x = xpos;
-  let y = ypos;
-  const [seconds, setSeconds] = useState(duration);
-  const [isActive, setIsActive] = useState(false);
+class Timer extends React.Component {
+  constructor({ xpos, ypos, dur, isActive }) {
+    super();
 
-  function toggle() {
-    setIsActive(!isActive);
+    this.state = {
+      duration: dur,
+      remainingTime: dur,
+      active: isActive,
+      complete: false,
+    };
+    this.x = xpos;
+    this.y = ypos;
+    this.interval = null;
+
+    if(isActive) this.start();
   }
 
-  function reset() {
-    setSeconds(0);
-    setIsActive(false);
+  start() {
+    this.interval = setInterval(() => {
+      this.tick();
+    }, 1000);
   }
 
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds + 1);
-      }, 1000);
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
+
+  reset(){
+    clearInterval(this.interval);
+    this.setState({remainingTime: 0, active: false, complete: false})
+  }
+
+  tick() {
+    this.setState({ remainingTime: this.state.remainingTime - 1 });
+    if (this.state.remainingTime <= 0) {
+      this.setState({remainingTime: 0, active: false, complete: true})
+      clearInterval(this.interval)
     }
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
+  }
 
-  return (
-    <>
-      <g transform={`translate(${x}, ${y})`}>
-        <text
-          x="0"
-          y="0"
-          fill={seconds < 11 ? "red" : "white"}
-          stroke={seconds < 11 ? "red" : "black"}
-          strokeWidth="2"
-          fontSize="60"
-          fontWeight="900"
-          dominantBaseline="middle"
-          textAnchor="middle"
-        >
-          {seconds < 10 ? "0" : ""}
-          {seconds}
-        </text>
-      </g>
-    </>
-  );
-};
+  render() {
+    return (
+      <>
+        <g transform={`translate(${this.x}, ${this.y})`}>
+          <text
+            x="0"
+            y="0"
+            fill={this.state.remainingTime < 11 ? "red" : "black"}
+            strokeWidth="1"
+            fontSize="60"
+            fontWeight="900"
+            dominantBaseline="middle"
+            textAnchor="middle"
+          >
+            {this.state.remainingTime < 10 ? "0" : ""}
+            {this.state.remainingTime}
+          </text>
+        </g>
+      </>
+    );
+  }
+}
 
 export default Timer;

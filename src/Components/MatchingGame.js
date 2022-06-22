@@ -2,7 +2,7 @@ import "./MatchingGame.css";
 import Card from "./Card";
 import Timer from "./Timer";
 import React from "react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 
 function MatchingGame({
   svgWidth,
@@ -27,20 +27,13 @@ function MatchingGame({
   let columnHeight = r * (cHeight + gap) - gap;
   let totalCards = r * c;
 
+  // UI
+  const timerRef = useRef(null);
+
   // symbols
   let str = "AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ";
   str = str.substring(0, totalCards);
   let symbols = str.split("");
-
-  // card click handler
-  const onClick = (e) => {
-    if (!gameStarted) {
-      console.log("game not yet started");
-      return;
-    }
-
-    handleCardClick(e);
-  };
 
   // game stats
   let selectedCards = [];
@@ -58,9 +51,19 @@ function MatchingGame({
     }
   };
 
+  // card click handler
+  const onClick = (e) => {
+    if (!gameStarted) {
+      console.log("game not yet started");
+      return;
+    }
+
+    handleCardClick(e);
+  };
+
   const handleStartClick = () => {
     gameStarted = true;
-    console.log(gameStarted);
+    console.log("game started:", gameStarted);
 
     deal();
     shuffle();
@@ -185,7 +188,13 @@ function MatchingGame({
             />
           );
         })}
-        <Timer xpos={450} ypos={40} duration={70}/>
+        <Timer
+          ref={timerRef}
+          xpos={450}
+          ypos={40}
+          dur={20}
+          isActive={true}
+        />
       </svg>
       <div onClick={handleStartClick} className="deal-button">
         START

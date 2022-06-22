@@ -40,7 +40,7 @@ class Card extends React.Component {
   };
 
   move = (x, y, delay) => {
-    console.log("move to: ", x, y, "delay:", delay);
+    //console.log("move to: ", x, y, "delay:", delay);
     const holder = document.querySelector(`#holder_${this.i}`);
     const str = `translate(${x}, ${y})`
     holder.setAttribute("transform", str)
