@@ -12,7 +12,7 @@ function MatchingGame({
   columns,
   cardWidth,
   cardHeight,
-  duration
+  duration,
 }) {
   // svg variables
   let w = svgWidth;
@@ -22,8 +22,8 @@ function MatchingGame({
   // game variables
   let r = rows | 4;
   let c = columns | 4;
-  let cWidth = cardWidth | 50;
-  let cHeight = cardHeight | 50;
+  let cWidth = cardWidth;
+  let cHeight = cardHeight;
   let gap = 10;
   let rowWidth = c * (cWidth + gap) - gap;
   let columnHeight = r * (cHeight + gap) - gap;
@@ -43,7 +43,9 @@ function MatchingGame({
   let matches = 0;
   let misses = 0;
   let gameStarted = false;
-  let gameOver = false;
+  //let gameOver = false;
+
+  const [gameOver, setGameOver] = useState(false);
 
   const cardRefs = useRef([]);
   cardRefs.current = [];
@@ -65,20 +67,20 @@ function MatchingGame({
   };
 
   const handleStartClick = () => {
-    if(gameStarted) return;
+    if (gameStarted) return;
 
     gameStarted = true;
-    
+
     deal();
-    setTimeout(hideAll, 1200)
-    setTimeout(shuffle, 2200)
-    setTimeout(shuffle, 2900)
-    startTimer();
+    setTimeout(hideAll, 2000);
+    setTimeout(shuffle, 3000);
+    setTimeout(shuffle, 3700);
+    setTimeout(startTimer, 4500);
   };
 
   const deal = () => {
-    const startX = cWidth/2 + (w - rowWidth) / 2;
-    const startY = cHeight/2 + (h - columnHeight) / 2;
+    const startX = cWidth / 2 + (w - rowWidth) / 2;
+    const startY = cHeight / 2 + (h - columnHeight) / 2;
     for (let row = 0; row < r; row++) {
       for (let col = 0; col < c; col++) {
         const ind = totalCards - (r * row + col);
@@ -99,7 +101,6 @@ function MatchingGame({
     });
   }
 
-
   const shuffle = () => {
     console.log("shuffling");
     let indexArray = [];
@@ -108,8 +109,8 @@ function MatchingGame({
     }
     indexArray = indexArray.sort((a, b) => 0.5 - Math.random());
 
-    const startX = cWidth/2 + (w - rowWidth) / 2;
-    const startY = cWidth/2 + (h - columnHeight) / 2;
+    const startX = cWidth / 2 + (w - rowWidth) / 2;
+    const startY = cWidth / 2 + (h - columnHeight) / 2;
     for (let i = 0; i < totalCards; i++) {
       let col = i % c;
       let row = Math.floor(i / c);
@@ -126,10 +127,10 @@ function MatchingGame({
     timerRef.current.start();
   };
 
-  const onEndTimer = () =>{
-    console.log('timer finished!');
-    gameOver = true;
-  }
+  const onEndTimer = () => {
+    console.log("timer finished!");
+    setGameOver(true);
+  };
 
   const handleCardClick = (index) => {
     if (gameOver) return;
@@ -206,16 +207,25 @@ function MatchingGame({
               key={index}
               x={25 + index * 1}
               y={h / 2 - index * 1}
-              w={cardWidth}
-              h={cardHeight}
+              width={cWidth}
+              height={cHeight}
               index={index}
               symbol={symbol}
               onClick={onClick}
             />
           );
         })}
-        <Timer ref={timerRef} xpos={450} ypos={40} dur={gameDuration} isActive={false} onComplete={onEndTimer}/>
-        <Bumper width={w} height={h} message={"game over"} />
+        <Timer
+          ref={timerRef}
+          xpos={450}
+          ypos={40}
+          dur={gameDuration}
+          isActive={false}
+          onComplete={onEndTimer}
+        />
+        {gameOver && (
+          <Bumper width={w} height={h} message={"game over"} />
+        )}
       </svg>
       <div onClick={handleStartClick} className="deal-button">
         START

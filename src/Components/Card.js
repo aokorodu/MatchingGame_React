@@ -10,8 +10,8 @@ class Card extends React.Component {
       x: x,
       y: y,
     };
-    this.w = width | 50;
-    this.h = height | 50;
+    this.w = width;
+    this.h = height;
     this.i = index | 0;
     this.s = symbol;
     this.onClick = onClick;
@@ -113,10 +113,12 @@ class Card extends React.Component {
               fill="white"
             ></rect> */}
             <text
+            className="cardText"
               x={0}
               y={0}
               fill="#212121"
-              fontSize="30"
+              stroke="#212121"
+              fontSize="45"
               fontWeight="900"
               dominantBaseline="middle"
               textAnchor="middle"

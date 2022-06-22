@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Major+Mono+Display&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+*{
+ 
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+text {
+  font-family: 'Bungee Shade', cursive;
+}
+
+.cardText{
+  font-family: 'Major Mono Display', monospace;
+  font-weight: 400;
+}
+
+.clockText{
+  font-family: 'Bungee', cursive;
+  font-weight: 400;
+}
+
 .App {
   text-align: center;
 }

@@ -10,7 +10,7 @@ class Bumper extends React.Component {
   }
 
   show(){
-    
+
   }
 
   render() {
@@ -28,10 +28,10 @@ class Bumper extends React.Component {
         <text
           x={this.w/2}
           y={this.h/2}
-          fill="none"
+          fill="white"
           stroke="white"
-          strokeWidth="2"
-          fontSize="80"
+          strokeWidth="1"
+          fontSize="60"
           fontWeight="900"
           dominantBaseline="middle"
           textAnchor="middle"

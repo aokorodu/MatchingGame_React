@@ -49,10 +49,12 @@ class Timer extends React.Component {
       <>
         <g transform={`translate(${this.x}, ${this.y})`}>
           <text
+          className="clockText"
             x="0"
             y="0"
-            fill={this.state.remainingTime < 11 ? "red" : "black"}
-            strokeWidth="1"
+            fill={this.state.remainingTime < 11 ? "red" : "white"}
+            stroke="black"
+            strokeWidth="3"
             fontSize="60"
             fontWeight="900"
             dominantBaseline="middle"
