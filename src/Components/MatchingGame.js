@@ -1,6 +1,7 @@
 import "./MatchingGame.css";
 import Card from "./Card";
 import Timer from "./Timer";
+import Bumper from "./Bumper";
 import React from "react";
 import { useState, useRef } from "react";
 
@@ -11,6 +12,7 @@ function MatchingGame({
   columns,
   cardWidth,
   cardHeight,
+  duration
 }) {
   // svg variables
   let w = svgWidth;
@@ -26,6 +28,7 @@ function MatchingGame({
   let rowWidth = c * (cWidth + gap) - gap;
   let columnHeight = r * (cHeight + gap) - gap;
   let totalCards = r * c;
+  let gameDuration = duration;
 
   // UI
   let timerRef = useRef(null);
@@ -211,7 +214,8 @@ function MatchingGame({
             />
           );
         })}
-        <Timer ref={timerRef} xpos={450} ypos={40} dur={20} isActive={false} onComplete={onEndTimer}/>
+        <Timer ref={timerRef} xpos={450} ypos={40} dur={gameDuration} isActive={false} onComplete={onEndTimer}/>
+        <Bumper width={w} height={h} message={"game over"} />
       </svg>
       <div onClick={handleStartClick} className="deal-button">
         START
