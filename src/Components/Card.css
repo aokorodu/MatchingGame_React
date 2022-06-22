@@ -1,0 +1,10 @@
+.card_holder {
+    transform: scale(1);
+    transition-property: transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-out;
+  }
+
+  .card_holder:hover {
+    transform: scale(1.1);
+  }

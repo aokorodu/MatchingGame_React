@@ -1,5 +1,6 @@
 import React from "react";
 import { gsap } from "gsap";
+import "./Card.css";
 
 class Card extends React.Component {
   constructor({ x, y, width, height, index, symbol, onClick }) {
@@ -31,13 +32,30 @@ class Card extends React.Component {
   show = () => {
     console.log("show");
     const face = document.querySelector(`#face_${this.i}`);
-    face.setAttribute("opacity", 0)
+    gsap.to(face, {
+      duration: 0.22,
+     opacity: 0,
+      ease: "power4.inOut",
+      
+    });
+
+    // const face = document.querySelector(`#face_${this.i}`);
+    // face.setAttribute("opacity", 0)
   };
 
-  hide = () => {
-    console.log("hide");
+  hide = (delay) => {
+    console.log("hide delay:", delay);
     const face = document.querySelector(`#face_${this.i}`);
-    face.setAttribute("opacity", .2)
+    gsap.to(face, {
+      duration: 0.67,
+     opacity: 1,
+      delay: delay,
+      ease: "power4.inOut",
+      
+    });
+
+    // const face = document.querySelector(`#face_${this.i}`);
+    // face.setAttribute("opacity", 1)
   };
 
   move_orig = (x, y, delay) => {
@@ -78,6 +96,7 @@ move = (newX, newY, delay = 0)=> {
             parseInt(this.position.x) + this.w / 2
           }, ${parseInt(this.position.y + this.h / 2)})`}
         >
+          <g className="card_holder">
           <rect
             x={-this.w / 2}
             y={-this.h / 2}
@@ -110,8 +129,9 @@ move = (newX, newY, delay = 0)=> {
             ry="10"
             stroke="black"
             fill="#288DDD"
-            opacity=".2"
+            opacity="0"
           ></rect>
+          </g>
         </g>
       </>
     );

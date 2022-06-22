@@ -63,11 +63,13 @@ function MatchingGame({
 
   const handleStartClick = () => {
     if(gameStarted) return;
-    
+
     gameStarted = true;
+    
     deal();
-    setTimeout(shuffle, 1200)
-    //shuffle();
+    setTimeout(hideAll, 1200)
+    setTimeout(shuffle, 2200)
+    setTimeout(shuffle, 2900)
     startTimer();
   };
 
@@ -84,6 +86,16 @@ function MatchingGame({
       }
     }
   };
+
+  function hideAll() {
+    console.log("hiding");
+    cardRefs.current.forEach((card, index) => {
+      const row = Math.floor(index / r);
+      const col = index % c;
+      card.hide(row / 10 + col / 10);
+    });
+  }
+
 
   const shuffle = () => {
     console.log("shuffling");
