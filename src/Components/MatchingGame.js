@@ -74,8 +74,8 @@ function MatchingGame({
   };
 
   const deal = () => {
-    const startX = (w - rowWidth) / 2;
-    const startY = (h - columnHeight) / 2;
+    const startX = cWidth/2 + (w - rowWidth) / 2;
+    const startY = cHeight/2 + (h - columnHeight) / 2;
     for (let row = 0; row < r; row++) {
       for (let col = 0; col < c; col++) {
         const ind = totalCards - (r * row + col);
@@ -105,8 +105,8 @@ function MatchingGame({
     }
     indexArray = indexArray.sort((a, b) => 0.5 - Math.random());
 
-    const startX = (w - rowWidth) / 2;
-    const startY = (h - columnHeight) / 2;
+    const startX = cWidth/2 + (w - rowWidth) / 2;
+    const startY = cWidth/2 + (h - columnHeight) / 2;
     for (let i = 0; i < totalCards; i++) {
       let col = i % c;
       let row = Math.floor(i / c);

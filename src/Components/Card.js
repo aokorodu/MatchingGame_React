@@ -20,11 +20,11 @@ class Card extends React.Component {
   }
 
   clickHandler = () => {
-    console.log("symbol", this.s, ' clicked');
+    console.log("symbol", this.s, " clicked");
 
-    if(this.locked){
-      console.log('this card is locked')
-      return
+    if (this.locked) {
+      console.log("this card is locked");
+      return;
     }
     this.onClick(this.i);
   };
@@ -34,9 +34,8 @@ class Card extends React.Component {
     const face = document.querySelector(`#face_${this.i}`);
     gsap.to(face, {
       duration: 0.22,
-     opacity: 0,
+      opacity: 0,
       ease: "power4.inOut",
-      
     });
 
     // const face = document.querySelector(`#face_${this.i}`);
@@ -48,10 +47,9 @@ class Card extends React.Component {
     const face = document.querySelector(`#face_${this.i}`);
     gsap.to(face, {
       duration: 0.67,
-     opacity: 1,
+      opacity: 1,
       delay: delay,
       ease: "power4.inOut",
-      
     });
 
     // const face = document.querySelector(`#face_${this.i}`);
@@ -61,26 +59,24 @@ class Card extends React.Component {
   move_orig = (x, y, delay) => {
     //console.log("move to: ", x, y, "delay:", delay);
     const holder = document.querySelector(`#holder_${this.i}`);
-    const str = `translate(${x}, ${y})`
-    holder.setAttribute("transform", str)
+    const str = `translate(${x}, ${y})`;
+    holder.setAttribute("transform", str);
   };
 
-
-move = (newX, newY, delay = 0)=> {
-  const holder = document.querySelector(`#holder_${this.i}`);
+  move = (newX, newY, delay = 0) => {
+    const holder = document.querySelector(`#holder_${this.i}`);
     gsap.to(holder, {
       duration: 0.67,
       x: newX,
       y: newY,
       delay: delay,
       ease: "power4.inOut",
-      
     });
-  }
+  };
 
-  lock = ()=>{
+  lock = () => {
     this.locked = true;
-  }
+  };
 
   getSymbol = () => {
     console.log("show");
@@ -91,46 +87,66 @@ move = (newX, newY, delay = 0)=> {
   render() {
     return (
       <>
-        <g id={`holder_${this.i}`}
+        <g
+          id={`holder_${this.i}`}
           transform={`translate(${
             parseInt(this.position.x) + this.w / 2
           }, ${parseInt(this.position.y + this.h / 2)})`}
         >
           <g className="card_holder">
-          <rect
-            x={-this.w / 2}
-            y={-this.h / 2}
-            width={this.w}
-            height={this.h}
-            rx="10"
-            ry="10"
-            stroke="black"
-            fill="white"
-          ></rect>
-          <text
-            x={0}
-            y={0}
-            fill="black"
-            fontSize="30"
-            fontWeight="900"
-            dominantBaseline="middle"
-            textAnchor="middle"
-          >
-            {this.s}
-          </text>
-          <rect
-          id={`face_${this.i}`}
+            <circle
+              cx="0"
+              cy="0"
+              r={this.w / 2}
+              stroke="#212121"
+              strokeWidth="3"
+              fill="white"
+            ></circle>
+            {/* <rect
+              x={-this.w / 2}
+              y={-this.h / 2}
+              width={this.w}
+              height={this.h}
+              rx="10"
+              ry="10"
+              stroke="#212121"
+              fill="white"
+            ></rect> */}
+            <text
+              x={0}
+              y={0}
+              fill="#212121"
+              fontSize="30"
+              fontWeight="900"
+              dominantBaseline="middle"
+              textAnchor="middle"
+            >
+              {this.s}
+            </text>
+            <circle
+            id={`face_${this.i}`}
             onClick={this.clickHandler}
-            x={-this.w / 2}
-            y={-this.h / 2}
-            width={this.w}
-            height={this.h}
-            rx="10"
-            ry="10"
-            stroke="black"
-            fill="#288DDD"
-            opacity="0"
-          ></rect>
+              cx="0"
+              cy="0"
+              r={this.w / 2}
+              stroke="#212121"
+              strokeWidth="3"
+              fill="#288DDD"
+              opacity="0"
+            ></circle>
+            {/* <rect
+              id={`face_${this.i}`}
+              onClick={this.clickHandler}
+              x={-this.w / 2}
+              y={-this.h / 2}
+              width={this.w}
+              height={this.h}
+              rx="10"
+              ry="10"
+              stroke="#212121"
+              fill="#288DDD"
+              opacity="0"
+            ></rect> */}
           </g>
         </g>
       </>
