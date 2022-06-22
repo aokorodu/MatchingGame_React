@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 class Timer extends React.Component {
-  constructor({ xpos, ypos, dur, isActive }) {
+  constructor({ xpos, ypos, dur, isActive, onComplete }) {
     super();
 
     this.state = {
@@ -12,15 +12,21 @@ class Timer extends React.Component {
     };
     this.x = xpos;
     this.y = ypos;
+    this.onComplete = onComplete;
     this.interval = null;
 
     if(isActive) this.start();
   }
 
   start() {
+    this.setState({remainingTime: this.state.duration, active: true, complete: false});
     this.interval = setInterval(() => {
       this.tick();
     }, 1000);
+  }
+
+  end() {
+    this.onComplete();
   }
 
 
@@ -33,7 +39,8 @@ class Timer extends React.Component {
     this.setState({ remainingTime: this.state.remainingTime - 1 });
     if (this.state.remainingTime <= 0) {
       this.setState({remainingTime: 0, active: false, complete: true})
-      clearInterval(this.interval)
+      clearInterval(this.interval);
+      this.end();
     }
   }
 

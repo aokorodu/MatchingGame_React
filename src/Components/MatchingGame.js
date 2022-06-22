@@ -28,7 +28,7 @@ function MatchingGame({
   let totalCards = r * c;
 
   // UI
-  const timerRef = useRef(null);
+  let timerRef = useRef(null);
 
   // symbols
   let str = "AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ";
@@ -63,10 +63,9 @@ function MatchingGame({
 
   const handleStartClick = () => {
     gameStarted = true;
-    console.log("game started:", gameStarted);
-
     deal();
     shuffle();
+    startTimer();
   };
 
   const deal = () => {
@@ -104,6 +103,15 @@ function MatchingGame({
       );
     }
   };
+
+  const startTimer = () => {
+    timerRef.current.start();
+  };
+
+  const onEndTimer = () =>{
+    console.log('timer finished!');
+    gameOver = true;
+  }
 
   const handleCardClick = (index) => {
     if (gameOver) return;
@@ -188,13 +196,7 @@ function MatchingGame({
             />
           );
         })}
-        <Timer
-          ref={timerRef}
-          xpos={450}
-          ypos={40}
-          dur={20}
-          isActive={true}
-        />
+        <Timer ref={timerRef} xpos={450} ypos={40} dur={20} isActive={false} onComplete={onEndTimer}/>
       </svg>
       <div onClick={handleStartClick} className="deal-button">
         START
