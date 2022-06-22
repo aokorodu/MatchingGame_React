@@ -36,7 +36,7 @@ class Card extends React.Component {
   hide = () => {
     console.log("hide");
     const face = document.querySelector(`#face_${this.i}`);
-    face.setAttribute("opacity", 1)
+    face.setAttribute("opacity", .2)
   };
 
   move = (x, y, delay) => {
