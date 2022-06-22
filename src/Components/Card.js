@@ -1,4 +1,5 @@
 import React from "react";
+import { gsap } from "gsap";
 
 class Card extends React.Component {
   constructor({ x, y, width, height, index, symbol, onClick }) {
@@ -39,12 +40,25 @@ class Card extends React.Component {
     face.setAttribute("opacity", .2)
   };
 
-  move = (x, y, delay) => {
+  move_orig = (x, y, delay) => {
     //console.log("move to: ", x, y, "delay:", delay);
     const holder = document.querySelector(`#holder_${this.i}`);
     const str = `translate(${x}, ${y})`
     holder.setAttribute("transform", str)
   };
+
+
+move = (newX, newY, delay = 0)=> {
+  const holder = document.querySelector(`#holder_${this.i}`);
+    gsap.to(holder, {
+      duration: 0.67,
+      x: newX,
+      y: newY,
+      delay: delay,
+      ease: "power4.inOut",
+      
+    });
+  }
 
   lock = ()=>{
     this.locked = true;

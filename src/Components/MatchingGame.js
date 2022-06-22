@@ -62,9 +62,12 @@ function MatchingGame({
   };
 
   const handleStartClick = () => {
+    if(gameStarted) return;
+    
     gameStarted = true;
     deal();
-    shuffle();
+    setTimeout(shuffle, 1200)
+    //shuffle();
     startTimer();
   };
 
