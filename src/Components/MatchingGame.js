@@ -33,6 +33,7 @@ function MatchingGame({
 
   // UI
   let timerRef = useRef(null);
+  let scoreboardRef = useRef(null);
 
   // symbols
   let str = "AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ";
@@ -41,13 +42,13 @@ function MatchingGame({
 
   // game stats
   let selectedCards = [];
-  //let matches = 0;
+  let matches = 0;
   let misses = 0;
   let gameStarted = false;
   //let gameOver = false;
 
   const [gameOver, setGameOver] = useState(false);
-  const [matches, setMatches] = useState(0);
+ // const [matches, setMatches] = useState(0);
 
   const cardRefs = useRef([]);
   cardRefs.current = [];
@@ -181,8 +182,8 @@ function MatchingGame({
   };
 
   function collectWinnings() {
-
-    //setMatches(matches => matches + 1);
+    matches++;
+    scoreboardRef.current.addMake();
     selectedCards.forEach((card) => {
       card.lock();
     });
@@ -192,6 +193,7 @@ function MatchingGame({
 
   function putEmBack() {
     misses++;
+    scoreboardRef.current.addMiss();
     setTimeout(() => {
       selectedCards.forEach((card) => {
         card.hide();
@@ -202,19 +204,19 @@ function MatchingGame({
   }
 
   let startParticleEffect;
-  const dropEverything = (timestamp)=>{
-    if(startParticleEffect === undefined) startParticleEffect = timestamp;
+  const dropEverything = (timestamp) => {
+    if (startParticleEffect === undefined) startParticleEffect = timestamp;
     const elapsed = timestamp - startParticleEffect;
-    cardRefs.current.forEach((card)=>{
+    cardRefs.current.forEach((card) => {
       card.update();
-    })
-    if(elapsed > 15000) return;
-    window.requestAnimationFrame(dropEverything)
-  }
+    });
+    if (elapsed > 15000) return;
+    window.requestAnimationFrame(dropEverything);
+  };
 
   return (
     <div className="gameContainer">
-      <Scoreboard makes={matches} misses={0}></Scoreboard>
+      <Scoreboard ref={scoreboardRef} makes={matches} misses={misses} winningScore={8}></Scoreboard>
       <svg viewBox={vb}>
         {symbols.map((symbol, index) => {
           return (
@@ -239,22 +241,12 @@ function MatchingGame({
           isActive={false}
           onComplete={onEndTimer}
         />
-        {gameOver && (
-          <Bumper width={w} height={h} message={"game over"} />
-        )}
+        {gameOver && <Bumper width={w} height={h} message={"game over"} />}
       </svg>
-      
+
       <div onClick={handleStartClick} className="deal-button">
         START
       </div>
-      <div>
-        rows: {r} columns: {c} cardWidth: {cWidth} cardHeight: {cHeight}
-      </div>
-      <div>
-        rowWidth:{rowWidth} columnHeight:{columnHeight}
-      </div>
-      <div>totalCards:{totalCards}</div>
-      <div>gameStarted: {gameStarted}</div>
     </div>
   );
 }

@@ -20,6 +20,13 @@ text {
   font-weight: 400;
 }
 
+.scoreboardText {
+  font-size: 4rem;
+  color: #aeaeae;
+  font-family: 'Bungee', cursive;
+  font-weight: 400;
+}
+
 .App {
   text-align: center;
 }
