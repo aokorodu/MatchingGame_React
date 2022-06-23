@@ -181,7 +181,8 @@ function MatchingGame({
   };
 
   function collectWinnings() {
-    //setMatches(matches + 1);
+
+    //setMatches(matches => matches + 1);
     selectedCards.forEach((card) => {
       card.lock();
     });
@@ -214,7 +215,7 @@ function MatchingGame({
   return (
     <div className="gameContainer">
       <Scoreboard makes={matches} misses={0}></Scoreboard>
-      <svg width={w + "px"} height={h + "px"} viewBox={vb}>
+      <svg viewBox={vb}>
         {symbols.map((symbol, index) => {
           return (
             <Card

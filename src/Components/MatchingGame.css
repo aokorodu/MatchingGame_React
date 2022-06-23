@@ -7,7 +7,12 @@
   }
 
   svg {
-    border: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 5px solid black;
+    width: 100vmin;
+    max-width: 700px;
+    height: 100vmin;
+    max-height: 700px;
   }
 
   .deal-button {
