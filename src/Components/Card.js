@@ -52,7 +52,7 @@ class Card extends React.Component {
       this.velocity.x *= -1;
     }
 
-    this.velocity.x *= 0.999;
+    this.velocity.x *= 0.997;
 
     if (this.position.y > this.max) {
       this.position.y = this.max;
