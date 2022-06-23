@@ -130,7 +130,7 @@ function MatchingGame({
   const onEndTimer = () => {
     console.log("timer finished!");
     setGameOver(true);
-    dropEverything();
+    window.requestAnimationFrame(dropEverything);
   };
 
   const handleCardClick = (index) => {
@@ -198,11 +198,14 @@ function MatchingGame({
     }, 1200);
   }
 
-  const dropEverything = ()=>{
+  let startParticleEffect;
+  const dropEverything = (timestamp)=>{
+    if(startParticleEffect === undefined) startParticleEffect = timestamp;
+    const elapsed = timestamp - startParticleEffect;
     cardRefs.current.forEach((card)=>{
       card.update();
     })
-
+    if(elapsed > 15000) return;
     window.requestAnimationFrame(dropEverything)
   }
 

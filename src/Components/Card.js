@@ -37,12 +37,12 @@ class Card extends React.Component {
 
   update() {
     //if(this.locked) return;
-
+    
     this.velocity.x += this.accel.x;
     this.velocity.y += this.accel.y;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
-    this.position.rotation += this.velocity.x/2*Math.PI*this.w/40;
+    this.position.rotation += ((this.velocity.x / 2) * Math.PI * this.w) / 40;
 
     if (this.position.x > this.max) {
       this.position.x = this.max;
@@ -64,14 +64,13 @@ class Card extends React.Component {
 
     const holder = document.querySelector(`#holder_${this.i}`);
     gsap.set(holder, {
-     x: this.position.x,
+      x: this.position.x,
       y: this.position.y,
     });
 
-    if(!this.locked) return;
+    if (!this.locked) return;
     const innerHolder = document.querySelector(`#inner_holder_${this.i}`);
-    innerHolder.setAttribute("transform", `rotate(${this.position.rotation})`)
-
+    innerHolder.setAttribute("transform", `rotate(${this.position.rotation})`);
   }
 
   clickHandler = () => {
@@ -187,7 +186,7 @@ class Card extends React.Component {
               fill="#288DDD"
               opacity="0"
             ></circle>
-            
+
             {/* <rect
               id={`face_${this.i}`}
               onClick={this.clickHandler}
