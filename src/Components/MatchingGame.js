@@ -2,6 +2,7 @@ import "./MatchingGame.css";
 import Card from "./Card";
 import Timer from "./Timer";
 import Bumper from "./Bumper";
+import Scoreboard from "./Scoreboard";
 import React from "react";
 import { useState, useRef } from "react";
 
@@ -40,12 +41,13 @@ function MatchingGame({
 
   // game stats
   let selectedCards = [];
-  let matches = 0;
+  //let matches = 0;
   let misses = 0;
   let gameStarted = false;
   //let gameOver = false;
 
   const [gameOver, setGameOver] = useState(false);
+  const [matches, setMatches] = useState(0);
 
   const cardRefs = useRef([]);
   cardRefs.current = [];
@@ -179,7 +181,7 @@ function MatchingGame({
   };
 
   function collectWinnings() {
-    matches++;
+    //setMatches(matches + 1);
     selectedCards.forEach((card) => {
       card.lock();
     });
@@ -211,6 +213,7 @@ function MatchingGame({
 
   return (
     <div className="gameContainer">
+      <Scoreboard makes={matches} misses={0}></Scoreboard>
       <svg width={w + "px"} height={h + "px"} viewBox={vb}>
         {symbols.map((symbol, index) => {
           return (
@@ -239,6 +242,7 @@ function MatchingGame({
           <Bumper width={w} height={h} message={"game over"} />
         )}
       </svg>
+      
       <div onClick={handleStartClick} className="deal-button">
         START
       </div>
