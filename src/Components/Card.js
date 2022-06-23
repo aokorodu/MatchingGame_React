@@ -9,21 +9,22 @@ class Card extends React.Component {
     this.position = {
       x: x,
       y: y,
+      rotation: 0,
     };
 
     this.velocity = {
-      x:(1-Math.random()*2),
-      y:0
-    }
+      x: 1 - Math.random() * 2,
+      y: 0,
+    };
 
     this.accel = {
-      x:0,
-      y:1
-    }
+      x: 0,
+      y: 1,
+    };
 
-    this.elasticity = .75 + Math.random()*.20;
+    this.elasticity = 0.75 + Math.random() * 0.2;
 
-    this.max = 500 - width/2;
+    this.max = 500 - width / 2;
 
     this.w = width;
     this.h = height;
@@ -34,38 +35,43 @@ class Card extends React.Component {
     this.locked = false;
   }
 
-  update(){
+  update() {
     //if(this.locked) return;
 
     this.velocity.x += this.accel.x;
     this.velocity.y += this.accel.y;
-    this.position.x += this.velocity.x
+    this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+    this.position.rotation += this.velocity.x/2*Math.PI*this.w/40;
 
-    if(this.position.x > this.max){
+    if (this.position.x > this.max) {
       this.position.x = this.max;
       this.velocity.x *= -1;
-    } else if(this.position.x < this.w/2){
-      this.position.x = this.w/2;
+    } else if (this.position.x < this.w / 2) {
+      this.position.x = this.w / 2;
       this.velocity.x *= -1;
     }
 
-    this.velocity.x *= .999;
+    this.velocity.x *= 0.999;
 
-    if(this.position.y > this.max){
+    if (this.position.y > this.max) {
       this.position.y = this.max;
       this.velocity.y *= -this.elasticity;
-    } else if(this.position.y < 0){
+    } else if (this.position.y < 0) {
       this.position.y = 0;
       this.velocity.y *= -this.elasticity;
     }
 
     const holder = document.querySelector(`#holder_${this.i}`);
     gsap.set(holder, {
-      duration: 0.67,
-      x: this.position.x,
+     x: this.position.x,
       y: this.position.y,
     });
+
+    if(!this.locked) return;
+    const innerHolder = document.querySelector(`#inner_holder_${this.i}`);
+    innerHolder.setAttribute("transform", `rotate(${this.position.rotation})`)
+
   }
 
   clickHandler = () => {
@@ -137,7 +143,8 @@ class Card extends React.Component {
             parseInt(this.position.x) + this.w / 2
           }, ${parseInt(this.position.y + this.h / 2)})`}
         >
-          <g className="card_holder">
+          <circle cx="0" cy="0" r="10" fill="black"></circle>
+          <g id={`inner_holder_${this.i}`} className="card_holder">
             <circle
               cx="0"
               cy="0"
@@ -157,7 +164,7 @@ class Card extends React.Component {
               fill="white"
             ></rect> */}
             <text
-            className="cardText"
+              className="cardText"
               x={0}
               y={0}
               fill="#212121"
@@ -170,8 +177,8 @@ class Card extends React.Component {
               {this.s}
             </text>
             <circle
-            id={`face_${this.i}`}
-            onClick={this.clickHandler}
+              id={`face_${this.i}`}
+              onClick={this.clickHandler}
               cx="0"
               cy="0"
               r={this.w / 2}
@@ -180,6 +187,7 @@ class Card extends React.Component {
               fill="#288DDD"
               opacity="0"
             ></circle>
+            
             {/* <rect
               id={`face_${this.i}`}
               onClick={this.clickHandler}
