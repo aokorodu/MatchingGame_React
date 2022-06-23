@@ -130,6 +130,7 @@ function MatchingGame({
   const onEndTimer = () => {
     console.log("timer finished!");
     setGameOver(true);
+    dropEverything();
   };
 
   const handleCardClick = (index) => {
@@ -195,6 +196,14 @@ function MatchingGame({
 
       selectedCards = [];
     }, 1200);
+  }
+
+  const dropEverything = ()=>{
+    cardRefs.current.forEach((card)=>{
+      card.update();
+    })
+
+    window.requestAnimationFrame(dropEverything)
   }
 
   return (

@@ -10,6 +10,21 @@ class Card extends React.Component {
       x: x,
       y: y,
     };
+
+    this.velocity = {
+      x:(1-Math.random()*2),
+      y:0
+    }
+
+    this.accel = {
+      x:0,
+      y:1
+    }
+
+    this.elasticity = .75 + Math.random()*.20;
+
+    this.max = 500 - width/2;
+
     this.w = width;
     this.h = height;
     this.i = index | 0;
@@ -17,6 +32,40 @@ class Card extends React.Component {
     this.onClick = onClick;
 
     this.locked = false;
+  }
+
+  update(){
+    //if(this.locked) return;
+
+    this.velocity.x += this.accel.x;
+    this.velocity.y += this.accel.y;
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y;
+
+    if(this.position.x > this.max){
+      this.position.x = this.max;
+      this.velocity.x *= -1;
+    } else if(this.position.x < this.w/2){
+      this.position.x = this.w/2;
+      this.velocity.x *= -1;
+    }
+
+    this.velocity.x *= .999;
+
+    if(this.position.y > this.max){
+      this.position.y = this.max;
+      this.velocity.y *= -this.elasticity;
+    } else if(this.position.y < 0){
+      this.position.y = 0;
+      this.velocity.y *= -this.elasticity;
+    }
+
+    const holder = document.querySelector(`#holder_${this.i}`);
+    gsap.set(holder, {
+      duration: 0.67,
+      x: this.position.x,
+      y: this.position.y,
+    });
   }
 
   clickHandler = () => {
@@ -56,14 +105,9 @@ class Card extends React.Component {
     // face.setAttribute("opacity", 1)
   };
 
-  move_orig = (x, y, delay) => {
-    //console.log("move to: ", x, y, "delay:", delay);
-    const holder = document.querySelector(`#holder_${this.i}`);
-    const str = `translate(${x}, ${y})`;
-    holder.setAttribute("transform", str);
-  };
-
   move = (newX, newY, delay = 0) => {
+    this.position.x = newX;
+    this.position.y = newY;
     const holder = document.querySelector(`#holder_${this.i}`);
     gsap.to(holder, {
       duration: 0.67,
