@@ -15,6 +15,12 @@ function MatchingGame({
   cardHeight,
   duration,
 }) {
+
+
+
+  const [gameOver, setGameOver] = useState(false);
+
+
   // svg variables
   let w = svgWidth;
   let h = svgHeight;
@@ -30,6 +36,7 @@ function MatchingGame({
   let columnHeight = r * (cHeight + gap) - gap;
   let totalCards = r * c;
   let gameDuration = duration;
+  let startParticleEffect;
 
   // UI
   let timerRef = useRef(null);
@@ -45,10 +52,7 @@ function MatchingGame({
   let matches = 0;
   let misses = 0;
   let gameStarted = false;
-  //let gameOver = false;
 
-  const [gameOver, setGameOver] = useState(false);
- // const [matches, setMatches] = useState(0);
 
   const cardRefs = useRef([]);
   cardRefs.current = [];
@@ -74,12 +78,17 @@ function MatchingGame({
 
     gameStarted = true;
 
+    console.log('gameStarted: ', gameStarted)
     deal();
     setTimeout(hideAll, 2000);
     setTimeout(shuffle, 3000);
     setTimeout(shuffle, 3700);
     setTimeout(startTimer, 4500);
   };
+
+  const handlePlayAgainClick = () =>{
+    console.log("play again")
+  }
 
   const deal = () => {
     const startX = cWidth / 2 + (w - rowWidth) / 2;
@@ -89,7 +98,6 @@ function MatchingGame({
         const ind = totalCards - (r * row + col);
         const xpos = startX + row * (cWidth + gap);
         const ypos = startY + col * (cHeight + gap);
-        console.log("xpos:", xpos, " ypos:", ypos);
         cardRefs.current[r * row + col].move(xpos, ypos, ind / 20);
       }
     }
@@ -140,10 +148,6 @@ function MatchingGame({
     if (gameOver) return;
     if (selectedCards.length >= 2) return;
 
-    console.log("handleCardClick: ", index);
-
-    // if (!timer.isRunning()) timer.start();
-
     selectCard(index);
     checkIfMatching();
 
@@ -159,21 +163,27 @@ function MatchingGame({
   const checkIfMatching = () => {
     if (selectedCards.length == 2) {
       if (isMatching()) {
-        console.log("matching");
         collectWinnings();
+        isWinner();
       } else {
         putEmBack();
-        console.log("not matching");
       }
     }
   };
+
+  const isWinner = ()=>{
+    console.log(scoreboardRef.current.isWinner());
+    setTimeout(()=>{ console.log(scoreboardRef.current.isWinner())}, 100);
+    setTimeout(()=>{ console.log(scoreboardRef.current.isWinner())}, 200);
+    setTimeout(()=>{ console.log(scoreboardRef.current.isWinner())}, 300);
+    setTimeout(()=>{ console.log(scoreboardRef.current.isWinner())}, 400);
+  }
 
   const isMatching = () => {
     let matching = false;
     const symbol_0 = selectedCards[0].getSymbol();
     const symbol_1 = selectedCards[1].getSymbol();
 
-    console.log("symbols: ", symbol_0, symbol_1);
     if (symbol_0 == symbol_1) {
       matching = true;
     }
@@ -181,7 +191,7 @@ function MatchingGame({
     return matching;
   };
 
-  function collectWinnings() {
+  const collectWinnings = ()=> {
     matches++;
     scoreboardRef.current.addMake();
     selectedCards.forEach((card) => {
@@ -191,7 +201,7 @@ function MatchingGame({
     selectedCards = [];
   }
 
-  function putEmBack() {
+  const putEmBack = ()=> {
     misses++;
     scoreboardRef.current.addMiss();
     setTimeout(() => {
@@ -203,7 +213,7 @@ function MatchingGame({
     }, 1200);
   }
 
-  let startParticleEffect;
+  
   const dropEverything = (timestamp) => {
     if (startParticleEffect === undefined) startParticleEffect = timestamp;
     const elapsed = timestamp - startParticleEffect;
@@ -216,15 +226,15 @@ function MatchingGame({
 
   return (
     <div className="gameContainer">
-      <Scoreboard ref={scoreboardRef} makes={matches} misses={misses} winningScore={8}></Scoreboard>
+      <Scoreboard ref={scoreboardRef} makes={matches} misses={misses} winningScore={totalCards/2}></Scoreboard>
       <svg viewBox={vb}>
         {symbols.map((symbol, index) => {
           return (
             <Card
               ref={addToRefs}
               key={index}
-              x={25 + index * 1}
-              y={h / 2 - index * 1}
+              x={5 + cWidth + index}
+              y={h / 2 - index}
               width={cWidth}
               height={cHeight}
               index={index}
@@ -247,6 +257,11 @@ function MatchingGame({
       <div onClick={handleStartClick} className="deal-button">
         START
       </div>
+
+      {gameOver &&  <div onClick={handlePlayAgainClick} className="deal-button">
+        PLAY AGAIN
+      </div>}
+     
     </div>
   );
 }

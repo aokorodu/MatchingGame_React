@@ -37,7 +37,7 @@ class Card extends React.Component {
 
   update() {
     //if(this.locked) return;
-    
+
     this.velocity.x += this.accel.x;
     this.velocity.y += this.accel.y;
     this.position.x += this.velocity.x;
@@ -74,8 +74,6 @@ class Card extends React.Component {
   }
 
   clickHandler = () => {
-    console.log("symbol", this.s, " clicked");
-
     if (this.locked) {
       console.log("this card is locked");
       return;
@@ -84,7 +82,6 @@ class Card extends React.Component {
   };
 
   show = () => {
-    console.log("show");
     const face = document.querySelector(`#face_${this.i}`);
     gsap.to(face, {
       duration: 0.22,
@@ -97,11 +94,10 @@ class Card extends React.Component {
   };
 
   hide = (delay) => {
-    console.log("hide delay:", delay);
     const face = document.querySelector(`#face_${this.i}`);
     gsap.to(face, {
       duration: 0.67,
-      opacity: 1,
+      opacity: .5,
       delay: delay,
       ease: "power4.inOut",
     });
@@ -111,8 +107,6 @@ class Card extends React.Component {
   };
 
   move = (newX, newY, delay = 0) => {
-    this.position.x = newX;
-    this.position.y = newY;
     const holder = document.querySelector(`#holder_${this.i}`);
     gsap.to(holder, {
       duration: 0.67,
@@ -120,6 +114,10 @@ class Card extends React.Component {
       y: newY,
       delay: delay,
       ease: "power4.inOut",
+      onComplete: () => {
+        this.position.x = newX;
+        this.position.y = newY;
+      },
     });
   };
 
@@ -128,8 +126,7 @@ class Card extends React.Component {
   };
 
   getSymbol = () => {
-    console.log("show");
-
+    
     return this.s;
   };
 
@@ -138,9 +135,9 @@ class Card extends React.Component {
       <>
         <g
           id={`holder_${this.i}`}
-          transform={`translate(${
-            parseInt(this.position.x) + this.w / 2
-          }, ${parseInt(this.position.y + this.h / 2)})`}
+          transform={`translate(${parseInt(this.position.x)}, ${parseInt(
+            this.position.y
+          )})`}
         >
           <circle cx="0" cy="0" r="10" fill="black"></circle>
           <g id={`inner_holder_${this.i}`} className="card_holder">

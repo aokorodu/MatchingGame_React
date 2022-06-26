@@ -14,11 +14,18 @@ class Scoreboard extends React.Component {
   }
 
   addMake = ()=>{
-    this.setState({makes: this.state.makes + 1})
+    const newScore = this.state.makes + 1
+    
+    this.setState({makes: newScore});
+    if(newScore== this.state.winningScore) console.log("you win!");
   }
 
   addMiss = ()=>{
     this.setState({misses: this.state.misses + 1})
+  }
+
+  isWinner = ()=>{
+    return this.state.makes == this.state.winningScore;
   }
 
   render() {
